@@ -96,6 +96,8 @@ class block_hybridrecom extends block_base {
         $modulesid = array_column($data, 'id');
         $ids = implode(',', $modulesid);
 
+        $reasons = array_column($data, 'reason');
+
         $recommended_modules = $DB->get_records_sql(
             "SELECT cm.id, cm.module, m.name as modulename
             FROM {course_modules} AS cm
@@ -167,6 +169,7 @@ class block_hybridrecom extends block_base {
             'workshop' => 'assessment',
         );
         $zindex = 100 + (int) $top;
+        $reason_idx = 0;
 
         // Iterate over the modulesid array to order the output
         foreach ($modulesid as $module_id) {
@@ -179,8 +182,9 @@ class block_hybridrecom extends block_base {
                 $resource_name = format_string($course_module->name);
                 $course_shortname = format_string($course->shortname);
                 $resource_link = new moodle_url('/mod/' . $resource->modulename . '/view.php', array('id' => $course_module->id));
-                $output .= '<div class="tooltip" style="background-color: #f8f8ff; border-radius: 10px; padding: 0.75em 1.25em; position: relative; display: inline-block; opacity: 1; z-index: ' . $zindex . ';"> <div class="smaller activityiconcontainer '. $colormap[$resource->modulename] .'" style="display: inline; padding: 0;"> <img src="' . $icon . '" class="activityicon " data-region="activity-icon" data-id="' . $module_id . '" alt> </div> <a href="' . $resource_link . '">' . $resource_name . '</a> <div style="position: absolute; right: -0.5rem; top: -0.5rem; background-color: gray; border-radius: 100%; font-size: 0.75em; width: 1.5rem; height: 1.5rem; display: flex; justify-content: center; align-items: center; color: white; font-weight: 600; cursor: pointer; user-select: none;">i</div><span>Explanation of the recommendation</span></div>';
+                $output .= '<div class="tooltip" style="background-color: #f8f8ff; border-radius: 10px; padding: 0.75em 1.25em; position: relative; display: inline-block; opacity: 1; z-index: ' . $zindex . ';"> <div class="smaller activityiconcontainer '. $colormap[$resource->modulename] .'" style="display: inline; padding: 0;"> <img src="' . $icon . '" class="activityicon " data-region="activity-icon" data-id="' . $module_id . '" alt> </div> <a href="' . $resource_link . '">' . $resource_name . '</a> <div style="position: absolute; right: -0.5rem; top: -0.5rem; background-color: gray; border-radius: 100%; font-size: 0.75em; width: 1.5rem; height: 1.5rem; display: flex; justify-content: center; align-items: center; color: white; font-weight: 600; cursor: pointer; user-select: none;">i</div><span>' . $reasons[$reason_idx] . '</span></div>';
                 $zindex--;
+                $reason_idx++;
             }
         }
 
