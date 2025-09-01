@@ -68,11 +68,15 @@ class block_hybridrecom extends block_base {
         
 
         // Make a request to an external API to fetch data.
-        $ip_adderess = get_config('block_hybridrecom', 'config_ipaddress');
+
+        $ip_address = get_config('block_hybridrecom', 'config_ipaddress');
         $top = get_config('block_hybridrecom', 'config_top'); // Number of recommendations to fetch
-        $api_url = $ip_adderess . '/recommendations/' . $userid . '/' . $top;
+        $api_url = $ip_address . '/recommendations/' . $userid . '/' . $top;
+        $token = get_config('block_hybridrecom', 'config_key');
+        $authorization = 'Authorization: Bearer ' . $token;
 
         $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
         curl_setopt($ch, CURLOPT_URL, $api_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -88,6 +92,8 @@ class block_hybridrecom extends block_base {
         curl_close($ch);
 
         $data = json_decode($response);
+
+        debugging('Observer resource triggered for user ' . $data, DEBUG_DEVELOPER);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             return 'Error decoding API response: ' . json_last_error_msg();

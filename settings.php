@@ -37,4 +37,9 @@ if ($ADMIN->fulltree) {
         new lang_string('top', 'block_hybridrecom'),
         new lang_string('top_desc', 'block_hybridrecom'), 5, PARAM_INT);
     $settings->add($setting);
+
+    $setting = new admin_setting_configtext('block_hybridrecom/config_key',
+        new lang_string('key', 'block_hybridrecom'),
+        new lang_string('key_desc', 'block_hybridrecom'), "API KEY", PARAM_TEXT);
+    $settings->add($setting);
 }

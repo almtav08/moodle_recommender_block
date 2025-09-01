@@ -30,3 +30,5 @@ $string['ipaddress'] = 'Recommender server IP address';
 $string['ipaddress_desc'] = 'The IP address of the recommender server.';
 $string['top'] = 'Top recommendations';
 $string['top_desc'] = 'The number of top recommendations to show.';
+$string['key'] = 'Recommender key';
+$string['key_desc'] = 'The key to access the recommender server.';
